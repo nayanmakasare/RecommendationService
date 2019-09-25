@@ -1,0 +1,55 @@
+syntax = "proto3";
+
+package RecommendationService;
+
+service RecommendationService {
+    rpc TileClicked(TileClickedRequest) returns (TileClickedResponse) {}
+    rpc GetCollabrativeFilteringData(GetRecommendationRequest) returns (stream MovieTile) {}
+    rpc GetContentbasedData(GetRecommendationRequest) returns (stream MovieTile) {}
+    rpc InitialRecommendationEngine(InitRecommendationRequest) returns (InitRecommendationResponse) {}
+}
+
+message TileClickedRequest {
+    string userId = 1;
+    string tileId = 2;
+    double tileScore = 3;
+}
+
+message InitRecommendationRequest{
+    repeated string genres = 1;
+    repeated string categories = 2;
+    repeated string languages = 3;
+}
+
+message InitRecommendationResponse{
+    bool isDone = 1;
+}
+
+message GetRecommendationRequest{
+    string userId = 1;
+}
+
+message TileClickedResponse {
+    bool success = 1;
+}
+
+message MovieTile{
+    string ref_id = 1;
+    POSTERS posters = 2;
+    CONTENT content = 3;
+    METADATA metadata = 4;
+}
+
+message METADATA {
+    string title = 1;
+}
+
+message POSTERS {
+    repeated string landscape = 1;
+    repeated string portrait = 2;
+}
+
+message CONTENT {
+    bool detailPage = 2;
+    string package = 1;
+}
